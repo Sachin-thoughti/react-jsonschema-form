@@ -40,7 +40,7 @@ function FilesInfo(props) {
         return (
           <li key={key}>
             <strong>{name}</strong> ({type}, {size} bytes)
-            <PopupFileViewer data={fileData[0]}></PopupFileViewer>
+            <button type="button" title="start session" class="btn-shadow btn btn-primary" data={fileData[0]}>View</button>
           </li>
         );
       })}
