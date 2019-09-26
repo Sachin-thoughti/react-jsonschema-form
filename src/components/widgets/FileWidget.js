@@ -29,7 +29,7 @@ function processFiles(files) {
 }
 
 function FilesInfo(props) {
-  const { filesInfo } = props;
+  const { filesInfo, fileData } = props;
   if (filesInfo.length === 0) {
     return null;
   }
@@ -37,7 +37,10 @@ function FilesInfo(props) {
     <ul className="file-info">
       {filesInfo.map((fileInfo, key) => {
         debugger;
+        console.log("*--------------");
         console.log(fileInfo);
+        console.log(fileData);
+        console.log("--------------*");
         const { name, size, type } = fileInfo;
         return (
           <li key={key}>
@@ -93,7 +96,7 @@ class FileWidget extends Component {
 
   render() {
     const { multiple, id, readonly, disabled, autofocus, options } = this.props;
-    const { filesInfo } = this.state;
+    const { filesInfo, values } = this.state;
     return (
       <div>
         <p>
@@ -109,7 +112,7 @@ class FileWidget extends Component {
             accept={options.accept}
           />
         </p>
-        <FilesInfo filesInfo={filesInfo} />
+        <FilesInfo filesInfo={filesInfo} fileData={values} />
       </div>
     );
   }
