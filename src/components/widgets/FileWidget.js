@@ -36,15 +36,11 @@ function FilesInfo(props) {
   return (
     <ul className="file-info">
       {filesInfo.map((fileInfo, key) => {
-        console.log("*--------------");
-        console.log(fileInfo);
-        console.log(fileData);
-        console.log("--------------*");
         const { name, size, type } = fileInfo;
         return (
           <li key={key}>
             <strong>{name}</strong> ({type}, {size} bytes)
-            <popupfileviewer data={fileData[0]}></popupfileviewer>
+            <PopupFileViewer data={fileData[0]}></PopupFileViewer>
           </li>
         );
       })}
