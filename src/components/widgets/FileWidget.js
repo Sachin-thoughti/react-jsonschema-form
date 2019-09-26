@@ -37,10 +37,11 @@ function FilesInfo(props) {
     <ul className="file-info">
       {filesInfo.map((fileInfo, key) => {
         const { name, size, type } = fileInfo;
+        let cleanUpName = decodeURI(name);
         return (
           <li key={key}>
-            <strong>{name}</strong> ({type}, {size} bytes)
-            <button type="button" title="start session" class="btn-shadow btn btn-primary" data={fileData[0]}>View</button>
+            <strong>{cleanUpName}</strong> ({type}, {size} bytes)<br/>
+            <button type="button" title="start session" className="btn-shadow btn btn-primary" data={fileData[0]}>View</button>
           </li>
         );
       })}
