@@ -36,6 +36,7 @@ function FilesInfo(props) {
   return (
     <ul className="file-info">
       {filesInfo.map((fileInfo, key) => {
+        debugger;
         console.log(fileInfo);
         const { name, size, type } = fileInfo;
         return (
