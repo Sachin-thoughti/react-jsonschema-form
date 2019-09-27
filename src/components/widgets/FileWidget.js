@@ -67,7 +67,7 @@ function FilesInfo(props) {
               width={modalWidth}>
               <PerfectScrollbar style={{ textAlign: "center" }}>
                 <RodalContent
-                  filesInfo={filesInfo}
+                  type={type}
                   filedata={values[0]}
                   pageNumber={pageNumber}
                 />
@@ -81,32 +81,20 @@ function FilesInfo(props) {
 }
 
 function RodalContent(props) {
-  const { filesInfo, filedata, pageNumber } = props;
-  if (filesInfo.length === 0) {
-    return null;
-  } else {
+  const { type, filedata, pageNumber } = props;
+  if (type === "application/pdf") {
     return (
-      <div>
-        {filesInfo.map((fileInfo, key) => {
-          const { type } = fileInfo;
-          if (type === "application/pdf") {
-            return (
-              <Document file={filedata} key={key}>
-                <Page pageNumber={pageNumber} />
-              </Document>
-            );
-          } else if (
-            type === "image/jpeg" ||
-            type === "image/bmp" ||
-            type === "image/png" ||
-            type === "image/gif"
-          ) {
-            return <img src={filedata} key={key} />;
-          }
-        })}
-        ;
-      </div>
+      <Document file={filedata}>
+        <Page pageNumber={pageNumber} />
+      </Document>
     );
+  } else if (
+    type === "image/jpeg" ||
+    type === "image/bmp" ||
+    type === "image/png" ||
+    type === "image/gif"
+  ) {
+    return <img src={filedata} />;
   }
 }
 
