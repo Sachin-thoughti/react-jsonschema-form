@@ -137,8 +137,8 @@ class FileWidget extends Component {
       pageNumber: 1,
       numPages: null,
     };
-    this.show = this.show.bind(this);
-    this.hide = this.hide.bind(this);
+    //this.show = this.show.bind(this);
+    //this.hide = this.hide.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
