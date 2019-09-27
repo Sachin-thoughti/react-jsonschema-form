@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Rodal from "rodal";
+import PerfectScrollbar from "react-perfect-scrollbar";
 
 import { dataURItoBlob, shouldRender } from "../../utils";
 
@@ -138,9 +139,11 @@ class FileWidget extends Component {
           animation={this.state.animation}
           showMask={false}
           width={this.state.modalWidth}>
-          <div style={{ textAlign: "center" }}>
-            <img src={values[0]} />
-          </div>
+          <PerfectScrollbar>
+            <div style={{ textAlign: "center" }}>
+              <img src={values[0]} />
+            </div>
+          </PerfectScrollbar>
         </Rodal>
       </div>
     );
