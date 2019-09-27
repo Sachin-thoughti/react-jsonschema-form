@@ -53,7 +53,7 @@ function FilesInfo(props) {
 }
 
 function RodalContent(props) {
-  const { filesInfo, filedata } = props;
+  const { filesInfo, filedata, pageNumber } = props;
   if (filesInfo.length === 0) {
     return null;
   } else {
@@ -64,7 +64,7 @@ function RodalContent(props) {
           if (type === "application/pdf") {
             return (
               <Document file={filedata} key={key}>
-                <Page pageNumber={this.state.pageNumber} />
+                <Page pageNumber={pageNumber} />
               </Document>
             );
           } else if (
@@ -177,7 +177,11 @@ class FileWidget extends Component {
           showMask={false}
           width={this.state.modalWidth}>
           <PerfectScrollbar style={{ textAlign: "center" }}>
-            <RodalContent filesInfo={filesInfo} filedata={values[0]} />
+            <RodalContent
+              filesInfo={filesInfo}
+              filedata={values[0]}
+              pageNumber={this.state.pageNumber}
+            />
           </PerfectScrollbar>
         </Rodal>
       </div>
