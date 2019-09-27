@@ -180,6 +180,7 @@ class FileWidget extends Component {
 
   render() {
     const { multiple, id, readonly, disabled, autofocus, options } = this.props;
+    const { filesInfo } = this.state;
     return (
       <div>
         <p>
@@ -196,7 +197,7 @@ class FileWidget extends Component {
           />
         </p>
         <FilesInfo
-          filesInfo={this.state.filesInfo}
+          filesInfo={filesInfo}
           show={this.show}
           hide={this.hide}
           onDocumentLoadSuccess={this.onDocumentLoadSuccess}
