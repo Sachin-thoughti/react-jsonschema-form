@@ -63,9 +63,7 @@ function RodalContent(props) {
           const { type } = fileInfo;
           if (type === "application/pdf") {
             return (
-              <Document
-                file={filedata}
-                onLoadSuccess={this.onDocumentLoadSuccess}>
+              <Document file={filedata} key={key}>
                 <Page pageNumber={this.state.pageNumber} />
               </Document>
             );
