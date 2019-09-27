@@ -32,7 +32,14 @@ function processFiles(files) {
 }
 
 function FilesInfo(props) {
-  const { filesInfo } = props;
+  const {
+    filesInfo,
+    visible,
+    animation,
+    modalWidth,
+    values,
+    pageNumber,
+  } = props;
   if (filesInfo.length === 0) {
     return null;
   }
@@ -45,6 +52,27 @@ function FilesInfo(props) {
           <li key={key}>
             <strong>{cleanUpName}</strong> ({type}, {size} bytes)
             <br />
+            <button
+              type="button"
+              title="View File"
+              className="btn-shadow btn btn-primary"
+              onClick={props.show.bind(this)}>
+              View
+            </button>
+            <Rodal
+              visible={visible}
+              onClose={props.hide.bind(this)}
+              animation={animation}
+              showMask={false}
+              width={modalWidth}>
+              <PerfectScrollbar style={{ textAlign: "center" }}>
+                <RodalContent
+                  filesInfo={filesInfo}
+                  filedata={values[0]}
+                  pageNumber={pageNumber}
+                />
+              </PerfectScrollbar>
+            </Rodal>
           </li>
         );
       })}
@@ -109,6 +137,8 @@ class FileWidget extends Component {
       pageNumber: 1,
       numPages: null,
     };
+    this.show = this.show.bind(this);
+    this.hide = this.hide.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -146,7 +176,6 @@ class FileWidget extends Component {
 
   render() {
     const { multiple, id, readonly, disabled, autofocus, options } = this.props;
-    const { filesInfo, values } = this.state;
     return (
       <div>
         <p>
@@ -162,28 +191,18 @@ class FileWidget extends Component {
             accept={options.accept}
           />
         </p>
-        <FilesInfo filesInfo={filesInfo} />
-        <button
-          type="button"
-          title="View File"
-          className="btn-shadow btn btn-primary"
-          onClick={this.show.bind(this)}>
-          View
-        </button>
-        <Rodal
+        <FilesInfo
+          filesInfo={this.state.filesInfo}
+          show={this.show}
+          hide={this.hide}
+          onDocumentLoadSuccess={this.onDocumentLoadSuccess}
+          values={this.state.values}
           visible={this.state.visible}
-          onClose={this.hide.bind(this)}
+          modalWidth={this.state.modalWidth}
           animation={this.state.animation}
-          showMask={false}
-          width={this.state.modalWidth}>
-          <PerfectScrollbar style={{ textAlign: "center" }}>
-            <RodalContent
-              filesInfo={filesInfo}
-              filedata={values[0]}
-              pageNumber={this.state.pageNumber}
-            />
-          </PerfectScrollbar>
-        </Rodal>
+          pageNumber={this.state.pageNumber}
+          numPages={this.state.numPages}
+        />
       </div>
     );
   }
