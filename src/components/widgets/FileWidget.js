@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Rodal from "rodal";
-import "rodal/lib/rodal.css";
 
 import { dataURItoBlob, shouldRender } from "../../utils";
 
