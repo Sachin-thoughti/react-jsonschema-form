@@ -24,9 +24,6 @@ module.exports = {
       }
     })
   ],
-  loaders: [
-    { test: /\.js$/, loader: 'babel', query: {compact: false} }
-  ],
   devtool: "source-map",
   externals: {
     react: {
