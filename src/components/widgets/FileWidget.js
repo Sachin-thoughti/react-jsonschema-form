@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Rodal from "rodal";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import { Document, Page } from "react-pdf";
 
 import { dataURItoBlob, shouldRender } from "../../utils";
 
@@ -29,7 +32,14 @@ function processFiles(files) {
 }
 
 function FilesInfo(props) {
-  const { filesInfo } = props;
+  const {
+    filesInfo,
+    visible,
+    animation,
+    modalWidth,
+    values,
+    pageNumber,
+  } = props;
   if (filesInfo.length === 0) {
     return null;
   }
@@ -37,14 +47,67 @@ function FilesInfo(props) {
     <ul className="file-info">
       {filesInfo.map((fileInfo, key) => {
         const { name, size, type } = fileInfo;
+        let cleanUpName = decodeURI(name);
         return (
           <li key={key}>
-            <strong>{name}</strong> ({type}, {size} bytes)
+            <strong>{cleanUpName}</strong> ({type}, {size} bytes)
+            <br />
+            <button
+              type="button"
+              title="View File"
+              className="btn-shadow btn btn-primary"
+              onClick={props.show.bind(this)}>
+              View
+            </button>
+            <Rodal
+              visible={visible}
+              onClose={props.hide.bind(this)}
+              animation={animation}
+              showMask={false}
+              width={modalWidth}>
+              <PerfectScrollbar style={{ textAlign: "center" }}>
+                <RodalContent
+                  filesInfo={filesInfo}
+                  filedata={values[0]}
+                  pageNumber={pageNumber}
+                />
+              </PerfectScrollbar>
+            </Rodal>
           </li>
         );
       })}
     </ul>
   );
+}
+
+function RodalContent(props) {
+  const { filesInfo, filedata, pageNumber } = props;
+  if (filesInfo.length === 0) {
+    return null;
+  } else {
+    return (
+      <div>
+        {filesInfo.map((fileInfo, key) => {
+          const { type } = fileInfo;
+          if (type === "application/pdf") {
+            return (
+              <Document file={filedata} key={key}>
+                <Page pageNumber={pageNumber} />
+              </Document>
+            );
+          } else if (
+            type === "image/jpeg" ||
+            type === "image/bmp" ||
+            type === "image/png" ||
+            type === "image/gif"
+          ) {
+            return <img src={filedata} key={key} />;
+          }
+        })}
+        ;
+      </div>
+    );
+  }
 }
 
 function extractFileInfo(dataURLs) {
@@ -65,12 +128,34 @@ class FileWidget extends Component {
     super(props);
     const { value } = props;
     const values = Array.isArray(value) ? value : [value];
-    this.state = { values, filesInfo: extractFileInfo(values) };
+    this.state = {
+      values,
+      filesInfo: extractFileInfo(values),
+      visible: false,
+      modalWidth: 1000,
+      animation: "slideUp",
+      pageNumber: 1,
+      numPages: null,
+    };
+    this.show = this.show.bind(this);
+    this.hide = this.hide.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return shouldRender(this, nextProps, nextState);
   }
+
+  show() {
+    this.setState({ visible: true });
+  }
+
+  hide() {
+    this.setState({ visible: false });
+  }
+
+  onDocumentLoadSuccess = ({ numPages }) => {
+    this.setState({ numPages });
+  };
 
   onChange = event => {
     const { multiple, onChange } = this.props;
@@ -91,7 +176,6 @@ class FileWidget extends Component {
 
   render() {
     const { multiple, id, readonly, disabled, autofocus, options } = this.props;
-    const { filesInfo } = this.state;
     return (
       <div>
         <p>
@@ -107,7 +191,18 @@ class FileWidget extends Component {
             accept={options.accept}
           />
         </p>
-        <FilesInfo filesInfo={filesInfo} />
+        <FilesInfo
+          filesInfo={this.state.filesInfo}
+          show={this.show}
+          hide={this.hide}
+          onDocumentLoadSuccess={this.onDocumentLoadSuccess}
+          values={this.state.values}
+          visible={this.state.visible}
+          modalWidth={this.state.modalWidth}
+          animation={this.state.animation}
+          pageNumber={this.state.pageNumber}
+          numPages={this.state.numPages}
+        />
       </div>
     );
   }
