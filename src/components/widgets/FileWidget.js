@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Rodal from "rodal";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import { Document, Page } from "react-pdf";
 
 import { dataURItoBlob, shouldRender } from "../../utils";
 
@@ -51,6 +52,38 @@ function FilesInfo(props) {
   );
 }
 
+function RodalContent(props) {
+  const { filesInfo, filedata } = props;
+  if (filesInfo.length === 0) {
+    return null;
+  } else {
+    return (
+      <div>
+        {filesInfo.map((fileInfo, key) => {
+          const { type } = fileInfo;
+          if (type === "application/pdf") {
+            return (
+              <Document
+                file={filedata}
+                onLoadSuccess={this.onDocumentLoadSuccess}>
+                <Page pageNumber={this.state.pageNumber} />
+              </Document>
+            );
+          } else if (
+            type === "image/jpeg" ||
+            type === "image/bmp" ||
+            type === "image/png" ||
+            type === "image/gif"
+          ) {
+            return <img src={filedata} />;
+          }
+        })}
+        ;
+      </div>
+    );
+  }
+}
+
 function extractFileInfo(dataURLs) {
   return dataURLs
     .filter(dataURL => typeof dataURL !== "undefined")
@@ -75,6 +108,8 @@ class FileWidget extends Component {
       visible: false,
       modalWidth: 1000,
       animation: "slideUp",
+      pageNumber: 1,
+      numPages: null,
     };
   }
 
@@ -89,6 +124,10 @@ class FileWidget extends Component {
   hide() {
     this.setState({ visible: false });
   }
+
+  onDocumentLoadSuccess = ({ numPages }) => {
+    this.setState({ numPages });
+  };
 
   onChange = event => {
     const { multiple, onChange } = this.props;
@@ -139,10 +178,8 @@ class FileWidget extends Component {
           animation={this.state.animation}
           showMask={false}
           width={this.state.modalWidth}>
-          <PerfectScrollbar>
-            <div style={{ textAlign: "center" }}>
-              <img src={values[0]} />
-            </div>
+          <PerfectScrollbar style={{ textAlign: "center" }}>
+            <RodalContent filesInfo={filesInfo} filedata={values[0]} />
           </PerfectScrollbar>
         </Rodal>
       </div>
