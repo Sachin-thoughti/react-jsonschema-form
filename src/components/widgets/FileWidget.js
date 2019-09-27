@@ -138,17 +138,9 @@ class FileWidget extends Component {
           animation={this.state.animation}
           showMask={false}
           width={this.state.modalWidth}>
-          <ModalHeader>Viewer</ModalHeader>
-          <ModalBody>
-            <div style={{ textAlign: "center" }}>
-              <img src={values[0]} />
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="danger" onClick={this.hide.bind(this)}>
-              Close
-            </Button>
-          </ModalFooter>
+          <div style={{ textAlign: "center" }}>
+            <img src={values[0]} />
+          </div>
         </Rodal>
       </div>
     );
