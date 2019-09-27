@@ -180,7 +180,15 @@ class FileWidget extends Component {
 
   render() {
     const { multiple, id, readonly, disabled, autofocus, options } = this.props;
-    const { filesInfo } = this.state;
+    const {
+      filesInfo,
+      values,
+      visible,
+      modalWidth,
+      animation,
+      pageNumber,
+      numPages,
+    } = this.state;
     return (
       <div>
         <p>
@@ -201,12 +209,12 @@ class FileWidget extends Component {
           show={this.show}
           hide={this.hide}
           onDocumentLoadSuccess={this.onDocumentLoadSuccess}
-          values={this.state.values}
-          visible={this.state.visible}
-          modalWidth={this.state.modalWidth}
-          animation={this.state.animation}
-          pageNumber={this.state.pageNumber}
-          numPages={this.state.numPages}
+          values={values}
+          visible={visible}
+          modalWidth={modalWidth}
+          animation={animation}
+          pageNumber={pageNumber}
+          numPages={numPages}
         />
       </div>
     );
