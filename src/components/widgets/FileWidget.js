@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Rodal from "rodal";
+import "rodal/lib/rodal.css";
 
 import { dataURItoBlob, shouldRender } from "../../utils";
 
@@ -29,7 +31,7 @@ function processFiles(files) {
 }
 
 function FilesInfo(props) {
-  const { filesInfo, fileData } = props;
+  const { filesInfo } = props;
   if (filesInfo.length === 0) {
     return null;
   }
@@ -40,8 +42,8 @@ function FilesInfo(props) {
         let cleanUpName = decodeURI(name);
         return (
           <li key={key}>
-            <strong>{cleanUpName}</strong> ({type}, {size} bytes)<br/>
-            <button type="button" title="start session" className="btn-shadow btn btn-primary" data={fileData[0]}>View</button>
+            <strong>{cleanUpName}</strong> ({type}, {size} bytes)
+            <br />
           </li>
         );
       })}
@@ -67,11 +69,19 @@ class FileWidget extends Component {
     super(props);
     const { value } = props;
     const values = Array.isArray(value) ? value : [value];
-    this.state = { values, filesInfo: extractFileInfo(values) };
+    this.state = { values, filesInfo: extractFileInfo(values), visible: false };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return shouldRender(this, nextProps, nextState);
+  }
+
+  show() {
+    this.setState({ visible: true });
+  }
+
+  hide() {
+    this.setState({ visible: false });
   }
 
   onChange = event => {
@@ -109,7 +119,19 @@ class FileWidget extends Component {
             accept={options.accept}
           />
         </p>
-        <FilesInfo filesInfo={filesInfo} fileData={values} />
+        <FilesInfo filesInfo={filesInfo} />
+        <button
+          type="button"
+          title="View File"
+          className="btn-shadow btn btn-primary"
+          onClick={this.show.bind(this)}>
+          View
+        </button>
+        <Rodal visible={this.state.visible} onClose={this.hide.bind(this)}>
+          <div>
+            <img src={values[0]} />
+          </div>
+        </Rodal>
       </div>
     );
   }
