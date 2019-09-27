@@ -68,7 +68,13 @@ class FileWidget extends Component {
     super(props);
     const { value } = props;
     const values = Array.isArray(value) ? value : [value];
-    this.state = { values, filesInfo: extractFileInfo(values), visible: false };
+    this.state = {
+      values,
+      filesInfo: extractFileInfo(values),
+      visible: false,
+      modalWidth: 1000,
+      animation: "slideUp",
+    };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -126,10 +132,23 @@ class FileWidget extends Component {
           onClick={this.show.bind(this)}>
           View
         </button>
-        <Rodal visible={this.state.visible} onClose={this.hide.bind(this)}>
-          <div>
-            <img src={values[0]} />
-          </div>
+        <Rodal
+          visible={this.state.visible}
+          onClose={this.hide.bind(this)}
+          animation={this.state.animation}
+          showMask={false}
+          width={this.state.modalWidth}>
+          <ModalHeader>Viewer</ModalHeader>
+          <ModalBody>
+            <div style={{ textAlign: "center" }}>
+              <img src={values[0]} />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="danger" onClick={this.hide.bind(this)}>
+              Close
+            </Button>
+          </ModalFooter>
         </Rodal>
       </div>
     );
