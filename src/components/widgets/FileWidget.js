@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Rodal from "rodal";
-import PerfectScrollbar from "react-perfect-scrollbar";
-import { Document, Page, pdfjs } from "react-pdf";
+import { pdfjs } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${
   pdfjs.version
 }/pdf.worker.js`;
@@ -35,14 +33,7 @@ function processFiles(files) {
 }
 
 function FilesInfo(props) {
-  const {
-    filesInfo,
-    visible,
-    animation,
-    modalWidth,
-    values,
-    pageNumber,
-  } = props;
+  const { filesInfo } = props;
   if (filesInfo.length === 0) {
     return null;
   }
@@ -62,43 +53,11 @@ function FilesInfo(props) {
               onClick={props.show.bind(this)}>
               View
             </button>
-            <Rodal
-              visible={visible}
-              onClose={props.hide.bind(this)}
-              animation={animation}
-              showMask={false}
-              width={modalWidth}>
-              <PerfectScrollbar style={{ textAlign: "center" }}>
-                <RodalContent
-                  type={type}
-                  filedata={values[0]}
-                  pageNumber={pageNumber}
-                />
-              </PerfectScrollbar>
-            </Rodal>
           </li>
         );
       })}
     </ul>
   );
-}
-
-function RodalContent(props) {
-  const { type, filedata, pageNumber } = props;
-  if (type === "application/pdf") {
-    return (
-      <Document file={filedata}>
-        <Page pageNumber={pageNumber} />
-      </Document>
-    );
-  } else if (
-    type === "image/jpeg" ||
-    type === "image/bmp" ||
-    type === "image/png" ||
-    type === "image/gif"
-  ) {
-    return <img src={filedata} />;
-  }
 }
 
 function extractFileInfo(dataURLs) {
