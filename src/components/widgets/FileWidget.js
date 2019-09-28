@@ -105,7 +105,7 @@ function RodalContent(props) {
             type === "image/png" ||
             type === "image/gif"
           ) {
-            return <img src={filedata} key={key} />;
+            return <img src={filedata} key={key} className="img-responsive" />;
           }
         })}
         ;
