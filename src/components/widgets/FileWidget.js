@@ -241,17 +241,19 @@ class FileWidget extends Component {
     return (
       <div>
         <p>
-          <input
-            ref={ref => (this.inputRef = ref)}
-            id={id}
-            type="file"
-            disabled={readonly || disabled}
-            onChange={this.onChange}
-            defaultValue=""
-            autoFocus={autofocus}
-            multiple={multiple}
-            accept={options.accept}
-          />
+          {values.length > 0 ? (
+            <input
+              ref={ref => (this.inputRef = ref)}
+              id={id}
+              type="file"
+              disabled={readonly || disabled}
+              onChange={this.onChange}
+              defaultValue=""
+              autoFocus={autofocus}
+              multiple={multiple}
+              accept={options.accept}
+            />
+          ) : null}
         </p>
         <FilesInfo
           filesInfo={filesInfo}
