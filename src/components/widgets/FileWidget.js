@@ -43,6 +43,7 @@ function FilesInfo(props) {
     modalWidth,
     values,
     pageNumber,
+    numPages,
   } = props;
   if (filesInfo.length === 0) {
     return null;
@@ -76,6 +77,7 @@ function FilesInfo(props) {
                   pageNumber={pageNumber}
                   next={props.next.bind(this)}
                   previous={props.previous.bind(this)}
+                  numPages={numPages}
                 />
               </PerfectScrollbar>
             </Rodal>
@@ -87,7 +89,7 @@ function FilesInfo(props) {
 }
 
 function RodalContent(props) {
-  const { filesInfo, filedata, pageNumber } = props;
+  const { filesInfo, filedata, pageNumber, numPages } = props;
   if (filesInfo.length === 0) {
     return null;
   } else {
@@ -99,21 +101,25 @@ function RodalContent(props) {
             return (
               // previous
               <Document file={filedata} key={key}>
-                <button
-                  type="button"
-                  title="previous"
-                  className="btn-shadow btn btn-primary prev-btn"
-                  onClick={props.previous.bind(this)}>
-                  &lt;
-                </button>
+                {pageNumber != 1 ? (
+                  <button
+                    type="button"
+                    title="previous"
+                    className="btn-shadow btn btn-primary prev-btn"
+                    onClick={props.previous.bind(this)}>
+                    &lt;
+                  </button>
+                ) : null}
                 <Page pageNumber={pageNumber} />
-                <button
-                  type="button"
-                  title="previous"
-                  className="btn-shadow btn btn-primary next-btn"
-                  onClick={props.next.bind(this)}>
-                  &gt;
-                </button>
+                {pageNumber != numPages ? (
+                  <button
+                    type="button"
+                    title="next"
+                    className="btn-shadow btn btn-primary next-btn"
+                    onClick={props.next.bind(this)}>
+                    &gt;
+                  </button>
+                ) : null}
               </Document>
             );
           } else if (
@@ -174,7 +180,7 @@ class FileWidget extends Component {
 
   next() {
     let { pageNumber, numPages } = this.state;
-    if (pageNumber === numPages) {
+    if (pageNumber == numPages) {
       return;
     } else {
       pageNumber++;
