@@ -104,7 +104,7 @@ function RodalContent(props) {
                   title="previous"
                   className="btn-shadow btn btn-primary"
                   onClick={props.previous.bind(this)}>
-                  <i class="fa fa-chevron-left" aria-hidden="true" />
+                  <i className="fa fa-chevron-left" />
                 </button>
                 <Page pageNumber={pageNumber} />
                 <button
@@ -112,7 +112,7 @@ function RodalContent(props) {
                   title="previous"
                   className="btn-shadow btn btn-primary"
                   onClick={props.next.bind(this)}>
-                  <i class="fa fa-chevron-right" aria-hidden="true" />
+                  <i className="fa fa-chevron-right" />
                 </button>
               </Document>
             );
