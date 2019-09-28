@@ -95,8 +95,23 @@ function RodalContent(props) {
           const { type } = fileInfo;
           if (type === "application/pdf") {
             return (
+              // previous
               <Document file={filedata} key={key}>
+                <button
+                  type="button"
+                  title="previous"
+                  className="btn-shadow btn btn-primary"
+                  onClick={props.previous.bind(this)}>
+                  <i class="fa fa-chevron-left" aria-hidden="true" />
+                </button>
                 <Page pageNumber={pageNumber} />
+                <button
+                  type="button"
+                  title="previous"
+                  className="btn-shadow btn btn-primary"
+                  onClick={props.next.bind(this)}>
+                  <i class="fa fa-chevron-right" aria-hidden="true" />
+                </button>
               </Document>
             );
           } else if (
@@ -143,6 +158,8 @@ class FileWidget extends Component {
     };
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
+    this.next = this.next.bind(this);
+    this.previous = this.previous.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -151,6 +168,26 @@ class FileWidget extends Component {
 
   show() {
     this.setState({ visible: true });
+  }
+
+  next() {
+    let { pageNumber, numPages } = this.state;
+    if (pageNumber === numPages) {
+      return;
+    } else {
+      pageNumber++;
+      this.setState({ pageNumber });
+    }
+  }
+
+  previous() {
+    let { pageNumber } = this.state;
+    if (pageNumber === 1) {
+      return;
+    } else {
+      pageNumber--;
+      this.setState({ pageNumber });
+    }
   }
 
   hide() {
@@ -211,6 +248,8 @@ class FileWidget extends Component {
           onDocumentLoadSuccess={this.onDocumentLoadSuccess}
           values={values}
           visible={visible}
+          next={this.next}
+          previous={this.previous}
           modalWidth={modalWidth}
           animation={animation}
           pageNumber={pageNumber}
