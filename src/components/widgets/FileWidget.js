@@ -78,6 +78,7 @@ function FilesInfo(props) {
                   next={props.next.bind(this)}
                   previous={props.previous.bind(this)}
                   numPages={numPages}
+                  onDocumentLoadSuccess={props.onDocumentLoadSuccess.bind(this)}
                 />
               </PerfectScrollbar>
             </Rodal>
@@ -100,7 +101,10 @@ function RodalContent(props) {
           if (type === "application/pdf") {
             return (
               // previous
-              <Document file={filedata} key={key}>
+              <Document
+                file={filedata}
+                key={key}
+                onLoadSuccess={props.onDocumentLoadSuccess.bind(this)}>
                 {pageNumber != 1 ? (
                   <button
                     type="button"
