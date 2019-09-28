@@ -74,6 +74,8 @@ function FilesInfo(props) {
                   filesInfo={filesInfo}
                   filedata={values[0]}
                   pageNumber={pageNumber}
+                  next={props.next}
+                  previous={props.previous}
                 />
               </PerfectScrollbar>
             </Rodal>
