@@ -163,7 +163,7 @@ class FileWidget extends Component {
       values,
       filesInfo: extractFileInfo(values),
       visible: false,
-      modalWidth: 1000,
+      modalWidth: 500,
       animation: "slideUp",
       pageNumber: 1,
       numPages: null,
