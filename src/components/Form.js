@@ -365,7 +365,7 @@ export default class Form extends Component {
           children
         ) : (
           <div>
-            <button type="submit" className="btn btn-info">
+            <button type="submit" className="btn btn-info" style={{display:'none'}}>
               Submit
             </button>
           </div>
